@@ -231,17 +231,19 @@ export default function App() {
                   {product.images && product.images.length > 0 ? (
                     <div style={{ padding: '12px' }}>
                       <img
-                        src={getCurrentImage(product)}
-                        alt={product.name}
-                        style={{
-                          width: '100%',
-                          height: '240px',
-                          objectFit: 'cover',
-                          display: 'block',
-                          borderRadius: '14px',
-                          marginBottom: '10px',
-                        }}
-                      />
+  src={getCurrentImage(product)}
+  alt={product.name}
+  onClick={() => setFullscreenImage(getCurrentImage(product))}
+  style={{
+    width: '100%',
+    height: '240px',
+    objectFit: 'cover',
+    display: 'block',
+    borderRadius: '14px',
+    marginBottom: '10px',
+    cursor: 'zoom-in',
+  }}
+/>
 
                       <div
                         style={{
@@ -393,6 +395,35 @@ export default function App() {
           </div>
         </div>
       </footer>
+      {fullscreenImage && (
+  <div
+    onClick={() => setFullscreenImage(null)}
+    style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background: 'rgba(0,0,0,0.9)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 9999,
+      cursor: 'zoom-out',
+      padding: '20px',
+    }}
+  >
+    <img
+      src={fullscreenImage}
+      alt="fullscreen"
+      style={{
+        maxWidth: '100%',
+        maxHeight: '100%',
+        borderRadius: '12px',
+      }}
+    />
+  </div>
+)}
     </div>
   );
 }
