@@ -37,7 +37,7 @@ const products = [
       'Сбалансированная модель для квартиры, офиса или аренды.',
     features: ['Телефон', 'Палец', 'Код', 'Карта', 'Ключ'],
     faceId: false,
-    youtube: 'https://www.youtube.com/shorts/hziNtHoAhdc',
+    youtube: 'https://youtu.be/hziNtHoAhdc',
     images: [
       '/images/2311A-1.jpg',
       '/images/2311A-2.jpg',
