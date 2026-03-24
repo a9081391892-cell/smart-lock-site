@@ -147,6 +147,18 @@ import { useState } from 'react';
 
 export default function App() {
   const [selectedImages, setSelectedImages] = useState({});
+    const getCurrentImage = (product) => {
+    if (!product.images || product.images.length === 0) return null;
+    const selectedIndex = selectedImages[product.name] ?? 0;
+    return product.images[selectedIndex];
+  };
+
+  const setProductImage = (productName, index) => {
+    setSelectedImages((prev) => ({
+      ...prev,
+      [productName]: index,
+    }));
+  };
   return (
     <div>
       <section className="hero">
@@ -214,18 +226,62 @@ export default function App() {
                   <span className="price">{product.price}</span>
                 </div>
 
-                <div className="product-name-box" style={{ padding: 0, overflow: 'hidden' }}>
+                           <div className="product-name-box" style={{ padding: 0, overflow: 'hidden' }}>
                   {product.images && product.images.length > 0 ? (
-                    <img
-                      src={product.images[0]}
-                      alt={product.name}
-                      style={{
-                        width: '100%',
-                        height: '220px',
-                        objectFit: 'cover',
-                        display: 'block',
-                      }}
-                    />
+                    <div style={{ padding: '12px' }}>
+                      <img
+                        src={getCurrentImage(product)}
+                        alt={product.name}
+                        style={{
+                          width: '100%',
+                          height: '240px',
+                          objectFit: 'cover',
+                          display: 'block',
+                          borderRadius: '14px',
+                          marginBottom: '10px',
+                        }}
+                      />
+
+                      <div
+                        style={{
+                          display: 'grid',
+                          gridTemplateColumns: 'repeat(4, 1fr)',
+                          gap: '8px',
+                        }}
+                      >
+                        {product.images.map((image, index) => {
+                          const isActive = (selectedImages[product.name] ?? 0) === index;
+
+                          return (
+                            <button
+                              key={image}
+                              type="button"
+                              onClick={() => setProductImage(product.name, index)}
+                              style={{
+                                border: isActive ? '2px solid #ffffff' : '1px solid rgba(255,255,255,0.15)',
+                                borderRadius: '10px',
+                                padding: 0,
+                                overflow: 'hidden',
+                                cursor: 'pointer',
+                                background: 'transparent',
+                                opacity: isActive ? 1 : 0.75,
+                              }}
+                            >
+                              <img
+                                src={image}
+                                alt={`${product.name} ${index + 1}`}
+                                style={{
+                                  width: '100%',
+                                  height: '58px',
+                                  objectFit: 'cover',
+                                  display: 'block',
+                                }}
+                              />
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
                   ) : (
                     <div
                       style={{
