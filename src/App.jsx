@@ -34,10 +34,21 @@ const products = [
     price: '8 290 ₽',
     badge: 'Альтернатива',
     description:
-      'Сбалансированная модель для квартиры, офиса или аренды. Хорошая альтернатива похожим моделям по дизайну и подаче.',
+      'Сбалансированная модель для квартиры, офиса или аренды.',
     features: ['Телефон', 'Палец', 'Код', 'Карта', 'Ключ'],
     faceId: false,
-    youtube: '#',
+    youtube: 'https://www.youtube.com/shorts/cEFqpsQOiGY',
+    images: [
+      '/images/2311A-1.jpg',
+      '/images/2311A-2.jpg',
+      '/images/2311A-3.jpg',
+      '/images/2311A-4.jpg',
+      '/images/2311A-5.jpg',
+      '/images/2311A-6.jpg',
+      '/images/2311A-7.jpg',
+      '/images/2311A-8.jpg',
+      '/images/2311A-9.jpg',
+    ],
   },
   {
     name: 'Smart Lock 2404D',
@@ -147,7 +158,14 @@ export default function App() {
             </p>
             <div className="actions">
               <a className="btn btn-primary" href="#catalog">Смотреть каталог</a>
-              <a className="btn btn-secondary" href="https://wa.me/79081391892">Написать в WhatsApp</a>
+              <a
+                className="btn btn-secondary"
+                href="https://wa.me/79081391892"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Написать в WhatsApp
+              </a>
             </div>
             <div className="stats">
               <div className="card stat-card">Открытие по Face ID, пальцу, коду и телефону</div>
@@ -193,17 +211,61 @@ export default function App() {
                   </span>
                   <span className="price">{product.price}</span>
                 </div>
-                <div className="product-name-box">{product.name}</div>
+
+                <div className="product-name-box" style={{ padding: 0, overflow: 'hidden' }}>
+                  {product.images && product.images.length > 0 ? (
+                    <img
+                      src={product.images[0]}
+                      alt={product.name}
+                      style={{
+                        width: '100%',
+                        height: '220px',
+                        objectFit: 'cover',
+                        display: 'block',
+                      }}
+                    />
+                  ) : (
+                    <div
+                      style={{
+                        minHeight: '220px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '20px',
+                        textAlign: 'center',
+                      }}
+                    >
+                      {product.name}
+                    </div>
+                  )}
+                </div>
+
                 <h3>{product.name}</h3>
                 <p>{product.description}</p>
+
                 <div className="feature-list">
                   {product.features.map((feature) => (
                     <div key={feature} className="feature-pill">{feature}</div>
                   ))}
                 </div>
+
                 <div className="card-actions">
-                  <a href={product.youtube} className="btn btn-secondary">Смотреть видео</a>
-                  <a href="https://wa.me/79081391892" className="btn btn-primary">WhatsApp</a>
+                  <a
+                    href={product.youtube}
+                    className="btn btn-secondary"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    Смотреть видео
+                  </a>
+                  <a
+                    href={`https://wa.me/79081391892?text=${encodeURIComponent(`Здравствуйте! Интересует ${product.name}`)}`}
+                    className="btn btn-primary"
+                    target="_blank"
+                    rel="noreferrer"
+                  >
+                    WhatsApp
+                  </a>
                 </div>
               </div>
             ))}
@@ -229,7 +291,14 @@ export default function App() {
               <input placeholder="Ваше имя" />
               <input placeholder="Телефон или WhatsApp" />
               <textarea placeholder="Например: нужна модель для квартиры, дверь 90 мм, нужен палец + код" />
-              <a className="btn btn-primary" href="https://wa.me/79081391892">Отправить заявку в WhatsApp</a>
+              <a
+                className="btn btn-primary"
+                href="https://wa.me/79081391892"
+                target="_blank"
+                rel="noreferrer"
+              >
+                Отправить заявку в WhatsApp
+              </a>
             </div>
           </div>
         </div>
@@ -257,7 +326,11 @@ export default function App() {
           </div>
           <div>
             <div><a href="tel:+79081391892">+7 (908) 139-18-92</a></div>
-            <div className="small"><a href="https://wa.me/79081391892">WhatsApp для консультации</a></div>
+            <div className="small">
+              <a href="https://wa.me/79081391892" target="_blank" rel="noreferrer">
+                WhatsApp для консультации
+              </a>
+            </div>
           </div>
         </div>
       </footer>
