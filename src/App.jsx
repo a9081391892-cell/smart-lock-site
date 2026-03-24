@@ -143,8 +143,10 @@ const faqs = [
     a: 'Нужно смотреть толщину двери, тип полотна и направление открывания. Для части моделей важен диапазон толщины 35–50 мм. Мы подскажем по фото и размерам.',
   },
 ];
+import { useState } from 'react';
 
 export default function App() {
+  const [selectedImages, setSelectedImages] = useState({});
   return (
     <div>
       <section className="hero">
