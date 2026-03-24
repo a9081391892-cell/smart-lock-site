@@ -147,6 +147,7 @@ import { useState } from 'react';
 
 export default function App() {
   const [selectedImages, setSelectedImages] = useState({});
+  const [fullscreenImage, setFullscreenImage] = useState(null);
     const getCurrentImage = (product) => {
     if (!product.images || product.images.length === 0) return null;
     const selectedIndex = selectedImages[product.name] ?? 0;
