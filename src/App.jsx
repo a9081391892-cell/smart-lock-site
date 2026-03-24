@@ -239,20 +239,75 @@ export default function App() {
                            <div className="product-name-box" style={{ padding: 0, overflow: 'hidden' }}>
                   {product.images && product.images.length > 0 ? (
                     <div style={{ padding: '12px' }}>
-                      <img
-  src={getCurrentImage(product)}
-  alt={product.name}
-  onClick={() => setFullscreenImage(getCurrentImage(product))}
-  style={{
-    width: '100%',
-    height: '240px',
-    objectFit: 'cover',
-    display: 'block',
-    borderRadius: '14px',
-    marginBottom: '10px',
-    cursor: 'zoom-in',
-  }}
-/>
+                     <div style={{ position: 'relative', marginBottom: '10px' }}>
+  <img
+    src={getCurrentImage(product)}
+    alt={product.name}
+    onClick={() => setFullscreenImage(getCurrentImage(product))}
+    style={{
+      width: '100%',
+      height: '240px',
+      objectFit: 'cover',
+      display: 'block',
+      borderRadius: '14px',
+      cursor: 'zoom-in',
+    }}
+  />
+
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      const current = selectedImages[product.name] ?? 0;
+      const total = product.images.length;
+      setProductImage(product.name, (current - 1 + total) % total);
+    }}
+    style={{
+      position: 'absolute',
+      top: '50%',
+      left: '10px',
+      transform: 'translateY(-50%)',
+      width: '38px',
+      height: '38px',
+      borderRadius: '50%',
+      border: '1px solid rgba(255,255,255,0.25)',
+      background: 'rgba(0,0,0,0.45)',
+      color: '#fff',
+      fontSize: '24px',
+      cursor: 'pointer',
+      lineHeight: 1,
+    }}
+  >
+    ‹
+  </button>
+
+  <button
+    type="button"
+    onClick={(e) => {
+      e.stopPropagation();
+      const current = selectedImages[product.name] ?? 0;
+      const total = product.images.length;
+      setProductImage(product.name, (current + 1) % total);
+    }}
+    style={{
+      position: 'absolute',
+      top: '50%',
+      right: '10px',
+      transform: 'translateY(-50%)',
+      width: '38px',
+      height: '38px',
+      borderRadius: '50%',
+      border: '1px solid rgba(255,255,255,0.25)',
+      background: 'rgba(0,0,0,0.45)',
+      color: '#fff',
+      fontSize: '24px',
+      cursor: 'pointer',
+      lineHeight: 1,
+    }}
+  >
+    ›
+  </button>
+</div>
 
                       <div
                         style={{
