@@ -1,3 +1,5 @@
+import { useState } from 'react';
+
 const products = [
   {
     name: 'Smart Lock 2303TY',
@@ -51,24 +53,24 @@ const products = [
     ],
   },
   {
-  name: 'Smart Lock S110WBL',
-  price: '6 850 ₽',
-  badge: 'Универсальный',
-  description:
-    'Универсальный умный замок для дверей толщиной 35–50 мм. Подходит для квартиры, офиса и аренды. Открывается по отпечатку, коду, карте, ключу и через приложение.',
-  features: ['Телефон', 'Палец', 'Код', 'Карта', 'Ключ', '35–50 мм'],
-  faceId: false,
-  youtube: '#',
-  images: [
-    '/images/2404D-1.jpg',
-    '/images/2404D-2.jpg',
-    '/images/2404D-3.jpg',
-    '/images/2404D-4.jpg',
-    '/images/2404D-5.jpg',
-    '/images/2404D-6.jpg',
-    '/images/2404D-7.jpg',
-  ],
-},,
+    name: 'Smart Lock 2404D',
+    price: '9 490 ₽',
+    badge: 'Универсальный',
+    description:
+      'Универсальный умный замок для дверей толщиной 35–50 мм. Подходит для квартиры, офиса и аренды. Открывается по отпечатку, коду, карте, ключу и через приложение.',
+    features: ['Телефон', 'Палец', 'Код', 'Карта', 'Ключ', '35–50 мм'],
+    faceId: false,
+    youtube: '#',
+    images: [
+      '/images/2404D-1.jpg',
+      '/images/2404D-2.jpg',
+      '/images/2404D-3.jpg',
+      '/images/2404D-4.jpg',
+      '/images/2404D-5.jpg',
+      '/images/2404D-6.jpg',
+      '/images/2404D-7.jpg',
+    ],
+  },
   {
     name: 'Smart Lock 2404E',
     price: '9 990 ₽',
@@ -152,12 +154,12 @@ const faqs = [
     a: 'Нужно смотреть толщину двери, тип полотна и направление открывания. Для части моделей важен диапазон толщины 35–50 мм. Мы подскажем по фото и размерам.',
   },
 ];
-import { useState } from 'react';
 
 export default function App() {
   const [selectedImages, setSelectedImages] = useState({});
-  const [fullscreenImage, setFullscreenImage] = useState(null);
-    const getCurrentImage = (product) => {
+  const [fullscreenViewer, setFullscreenViewer] = useState(null);
+
+  const getCurrentImage = (product) => {
     if (!product.images || product.images.length === 0) return null;
     const selectedIndex = selectedImages[product.name] ?? 0;
     return product.images[selectedIndex];
@@ -169,6 +171,34 @@ export default function App() {
       [productName]: index,
     }));
   };
+
+  const openFullscreen = (product) => {
+    if (!product.images || product.images.length === 0) return;
+    const currentIndex = selectedImages[product.name] ?? 0;
+    setFullscreenViewer({
+      productName: product.name,
+      images: product.images,
+      index: currentIndex,
+    });
+  };
+
+  const changeFullscreenImage = (direction) => {
+    setFullscreenViewer((prev) => {
+      if (!prev || !prev.images.length) return prev;
+
+      const total = prev.images.length;
+      const nextIndex =
+        direction === 'next'
+          ? (prev.index + 1) % total
+          : (prev.index - 1 + total) % total;
+
+      return {
+        ...prev,
+        index: nextIndex,
+      };
+    });
+  };
+
   return (
     <div>
       <section className="hero">
@@ -236,78 +266,78 @@ export default function App() {
                   <span className="price">{product.price}</span>
                 </div>
 
-                           <div className="product-name-box" style={{ padding: 0, overflow: 'hidden' }}>
+                <div className="product-name-box" style={{ padding: 0, overflow: 'hidden' }}>
                   {product.images && product.images.length > 0 ? (
                     <div style={{ padding: '12px' }}>
-                     <div style={{ position: 'relative', marginBottom: '10px' }}>
-  <img
-    src={getCurrentImage(product)}
-    alt={product.name}
-    onClick={() => setFullscreenImage(getCurrentImage(product))}
-    style={{
-      width: '100%',
-      height: '240px',
-      objectFit: 'cover',
-      display: 'block',
-      borderRadius: '14px',
-      cursor: 'zoom-in',
-    }}
-  />
+                      <div style={{ position: 'relative', marginBottom: '10px' }}>
+                        <img
+                          src={getCurrentImage(product)}
+                          alt={product.name}
+                          onClick={() => openFullscreen(product)}
+                          style={{
+                            width: '100%',
+                            height: '240px',
+                            objectFit: 'cover',
+                            display: 'block',
+                            borderRadius: '14px',
+                            cursor: 'zoom-in',
+                          }}
+                        />
 
-  <button
-    type="button"
-    onClick={(e) => {
-      e.stopPropagation();
-      const current = selectedImages[product.name] ?? 0;
-      const total = product.images.length;
-      setProductImage(product.name, (current - 1 + total) % total);
-    }}
-    style={{
-      position: 'absolute',
-      top: '50%',
-      left: '10px',
-      transform: 'translateY(-50%)',
-      width: '38px',
-      height: '38px',
-      borderRadius: '50%',
-      border: '1px solid rgba(255,255,255,0.25)',
-      background: 'rgba(0,0,0,0.45)',
-      color: '#fff',
-      fontSize: '24px',
-      cursor: 'pointer',
-      lineHeight: 1,
-    }}
-  >
-    ‹
-  </button>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const current = selectedImages[product.name] ?? 0;
+                            const total = product.images.length;
+                            setProductImage(product.name, (current - 1 + total) % total);
+                          }}
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            left: '10px',
+                            transform: 'translateY(-50%)',
+                            width: '38px',
+                            height: '38px',
+                            borderRadius: '50%',
+                            border: '1px solid rgba(255,255,255,0.25)',
+                            background: 'rgba(0,0,0,0.45)',
+                            color: '#fff',
+                            fontSize: '24px',
+                            cursor: 'pointer',
+                            lineHeight: 1,
+                          }}
+                        >
+                          ‹
+                        </button>
 
-  <button
-    type="button"
-    onClick={(e) => {
-      e.stopPropagation();
-      const current = selectedImages[product.name] ?? 0;
-      const total = product.images.length;
-      setProductImage(product.name, (current + 1) % total);
-    }}
-    style={{
-      position: 'absolute',
-      top: '50%',
-      right: '10px',
-      transform: 'translateY(-50%)',
-      width: '38px',
-      height: '38px',
-      borderRadius: '50%',
-      border: '1px solid rgba(255,255,255,0.25)',
-      background: 'rgba(0,0,0,0.45)',
-      color: '#fff',
-      fontSize: '24px',
-      cursor: 'pointer',
-      lineHeight: 1,
-    }}
-  >
-    ›
-  </button>
-</div>
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            const current = selectedImages[product.name] ?? 0;
+                            const total = product.images.length;
+                            setProductImage(product.name, (current + 1) % total);
+                          }}
+                          style={{
+                            position: 'absolute',
+                            top: '50%',
+                            right: '10px',
+                            transform: 'translateY(-50%)',
+                            width: '38px',
+                            height: '38px',
+                            borderRadius: '50%',
+                            border: '1px solid rgba(255,255,255,0.25)',
+                            background: 'rgba(0,0,0,0.45)',
+                            color: '#fff',
+                            fontSize: '24px',
+                            cursor: 'pointer',
+                            lineHeight: 1,
+                          }}
+                        >
+                          ›
+                        </button>
+                      </div>
 
                       <div
                         style={{
@@ -459,137 +489,108 @@ export default function App() {
           </div>
         </div>
       </footer>
-      {fullscreenImage && (
-  <div
-    onClick={() => setFullscreenImage(null)}
-    style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: 'rgba(0,0,0,0.9)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 9999,
-      cursor: 'zoom-out',
-      padding: '20px',
-    }}
-  >
-    <img
-      src={fullscreenImage}
-      alt="fullscreen"
-      style={{
-        maxWidth: '100%',
-        maxHeight: '100%',
-        borderRadius: '12px',
-      }}
-    />
-  </div>
-)}
-   {fullscreenImage && (
-  <div
-    onClick={() => setFullscreenImage(null)}
-    style={{
-      position: 'fixed',
-      top: 0,
-      left: 0,
-      width: '100%',
-      height: '100%',
-      background: 'rgba(0,0,0,0.9)',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      zIndex: 9999,
-    }}
-  >
-    <img
-      src={fullscreenImage}
-      alt="fullscreen"
-      onClick={(e) => e.stopPropagation()}
-      style={{
-        maxWidth: '90%',
-        maxHeight: '90%',
-        borderRadius: '12px',
-      }}
-    />
 
-    {/* ← стрелка */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        const newIndex =
-          (fullscreenIndex - 1 + fullscreenImages.length) %
-          fullscreenImages.length;
+      {fullscreenViewer && (
+        <div
+          onClick={() => setFullscreenViewer(null)}
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            background: 'rgba(0,0,0,0.92)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 9999,
+            padding: '20px',
+          }}
+        >
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setFullscreenViewer(null);
+            }}
+            style={{
+              position: 'absolute',
+              top: '20px',
+              right: '20px',
+              width: '44px',
+              height: '44px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.25)',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#fff',
+              fontSize: '24px',
+              cursor: 'pointer',
+            }}
+          >
+            ×
+          </button>
 
-        setFullscreenIndex(newIndex);
-        setFullscreenImage(fullscreenImages[newIndex]);
-      }}
-      style={{
-        position: 'absolute',
-        left: '30px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        fontSize: '42px',
-        color: '#fff',
-        background: 'rgba(0,0,0,0.4)',
-        border: 'none',
-        borderRadius: '50%',
-        width: '60px',
-        height: '60px',
-        cursor: 'pointer',
-      }}
-    >
-      ‹
-    </button>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              changeFullscreenImage('prev');
+            }}
+            style={{
+              position: 'absolute',
+              left: '20px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '52px',
+              height: '52px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.25)',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#fff',
+              fontSize: '28px',
+              cursor: 'pointer',
+            }}
+          >
+            ‹
+          </button>
 
-    {/* → стрелка */}
-    <button
-      onClick={(e) => {
-        e.stopPropagation();
-        const newIndex =
-          (fullscreenIndex + 1) % fullscreenImages.length;
+          <img
+            src={fullscreenViewer.images[fullscreenViewer.index]}
+            alt={`${fullscreenViewer.productName} fullscreen`}
+            onClick={(e) => e.stopPropagation()}
+            style={{
+              maxWidth: '100%',
+              maxHeight: '100%',
+              borderRadius: '12px',
+              display: 'block',
+            }}
+          />
 
-        setFullscreenIndex(newIndex);
-        setFullscreenImage(fullscreenImages[newIndex]);
-      }}
-      style={{
-        position: 'absolute',
-        right: '30px',
-        top: '50%',
-        transform: 'translateY(-50%)',
-        fontSize: '42px',
-        color: '#fff',
-        background: 'rgba(0,0,0,0.4)',
-        border: 'none',
-        borderRadius: '50%',
-        width: '60px',
-        height: '60px',
-        cursor: 'pointer',
-      }}
-    >
-      ›
-    </button>
-
-    {/* крестик */}
-    <button
-      onClick={() => setFullscreenImage(null)}
-      style={{
-        position: 'absolute',
-        top: '20px',
-        right: '20px',
-        fontSize: '30px',
-        color: '#fff',
-        background: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-      }}
-    >
-      ✕
-    </button>
-  </div>
-)}
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              changeFullscreenImage('next');
+            }}
+            style={{
+              position: 'absolute',
+              right: '20px',
+              top: '50%',
+              transform: 'translateY(-50%)',
+              width: '52px',
+              height: '52px',
+              borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.25)',
+              background: 'rgba(255,255,255,0.08)',
+              color: '#fff',
+              fontSize: '28px',
+              cursor: 'pointer',
+            }}
+          >
+            ›
+          </button>
+        </div>
+      )}
     </div>
   );
 }
