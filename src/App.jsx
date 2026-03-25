@@ -488,6 +488,108 @@ export default function App() {
     />
   </div>
 )}
+   {fullscreenImage && (
+  <div
+    onClick={() => setFullscreenImage(null)}
+    style={{
+      position: 'fixed',
+      top: 0,
+      left: 0,
+      width: '100%',
+      height: '100%',
+      background: 'rgba(0,0,0,0.9)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      zIndex: 9999,
+    }}
+  >
+    <img
+      src={fullscreenImage}
+      alt="fullscreen"
+      onClick={(e) => e.stopPropagation()}
+      style={{
+        maxWidth: '90%',
+        maxHeight: '90%',
+        borderRadius: '12px',
+      }}
+    />
+
+    {/* ← стрелка */}
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        const newIndex =
+          (fullscreenIndex - 1 + fullscreenImages.length) %
+          fullscreenImages.length;
+
+        setFullscreenIndex(newIndex);
+        setFullscreenImage(fullscreenImages[newIndex]);
+      }}
+      style={{
+        position: 'absolute',
+        left: '30px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        fontSize: '42px',
+        color: '#fff',
+        background: 'rgba(0,0,0,0.4)',
+        border: 'none',
+        borderRadius: '50%',
+        width: '60px',
+        height: '60px',
+        cursor: 'pointer',
+      }}
+    >
+      ‹
+    </button>
+
+    {/* → стрелка */}
+    <button
+      onClick={(e) => {
+        e.stopPropagation();
+        const newIndex =
+          (fullscreenIndex + 1) % fullscreenImages.length;
+
+        setFullscreenIndex(newIndex);
+        setFullscreenImage(fullscreenImages[newIndex]);
+      }}
+      style={{
+        position: 'absolute',
+        right: '30px',
+        top: '50%',
+        transform: 'translateY(-50%)',
+        fontSize: '42px',
+        color: '#fff',
+        background: 'rgba(0,0,0,0.4)',
+        border: 'none',
+        borderRadius: '50%',
+        width: '60px',
+        height: '60px',
+        cursor: 'pointer',
+      }}
+    >
+      ›
+    </button>
+
+    {/* крестик */}
+    <button
+      onClick={() => setFullscreenImage(null)}
+      style={{
+        position: 'absolute',
+        top: '20px',
+        right: '20px',
+        fontSize: '30px',
+        color: '#fff',
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+      }}
+    >
+      ✕
+    </button>
+  </div>
+)}
     </div>
   );
 }
